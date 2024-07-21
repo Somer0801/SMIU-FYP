@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:smiu/adminScreens/admin_login_screen.dart';
+import 'package:smiu/adminScreens/changeSupRequest.dart';
 import 'package:smiu/components/appAssets.dart';
 import 'package:smiu/components/colors.dart';
 import 'package:smiu/components/custom_button.dart';
@@ -8,7 +12,12 @@ import 'package:smiu/components/dashbardTile.dart';
 import 'package:smiu/components/textfield.dart';
 import 'package:smiu/components/textstyle.dart';
 import 'package:smiu/dashboard.dart';
+import 'package:smiu/student_screens/professors.dart';
 import 'package:smiu/student_screens/studentRegistration.dart';
+import 'package:smiu/student_screens/student_progress_screen.dart';
+import 'package:smiu/supervisorScreens/groupProgress.dart';
+
+import '../local_storage/get_storage.dart';
 class AdminDashBoardScreen extends StatefulWidget {
   const AdminDashBoardScreen({Key? key}) : super(key: key);
 
@@ -21,6 +30,30 @@ class _AdminDashBoardScreenState extends State<AdminDashBoardScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        endDrawer: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            height: Get.height*0.2,
+            width: Get.width*0.35,
+            child: Drawer(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          appStorage.erase();
+                          Get.to(AdminLoginScreen());
+                        },
+                        child: Text("Logout",style: TextStyle(color: Colors.black,),)),
+                    Divider(color: Colors.black,thickness: 2,)
+                  ],
+                ),
+              ),
+
+            ),
+          ),
+        ),
 
         backgroundColor: Colors.white,
         body:Column(
@@ -48,17 +81,26 @@ class _AdminDashBoardScreenState extends State<AdminDashBoardScreen> {
                             children: [
                               SizedBox(width: Get.width*0.1,),
                               Text("Dashboard",style: TextStyle(fontSize: 28,fontWeight: FontWeight.w700,color: Colors.white,letterSpacing: 1.2),),
-                              Padding(
-                                padding: const EdgeInsets.only(right:5),
-                                child: Container(
-                                  height: Get.height*0.08,
-                                  width: Get.width*0.1,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(image: AssetImage(AppAssets.logout))
-                                  ),
-                                ),
-                              )
+                              Builder(
+                                builder: (BuildContext context) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Scaffold.of(context).openEndDrawer(); // Open the drawer
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: Container(
+                                        height: Get.height*0.08,
+                                        width: Get.width*0.1,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(image: AssetImage(AppAssets.logout))
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -84,7 +126,7 @@ class _AdminDashBoardScreenState extends State<AdminDashBoardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
 
                             children: [
-                              Center(child: Text("Admin Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                              Center(child: Text(appStorage.read(adminName),style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                               SizedBox(height: Get.height*0.01,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -95,7 +137,7 @@ class _AdminDashBoardScreenState extends State<AdminDashBoardScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
 
-                                      Center(child: Text("Admin ID",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                                      Center(child: Text(appStorage.read(adminId).toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                                       SizedBox(height: Get.height*0.015,),
 
                                       Container(height: Get.height*0.05,width: Get.width*0.3,
@@ -138,14 +180,26 @@ class _AdminDashBoardScreenState extends State<AdminDashBoardScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
 
-                      Customstudent(name1: "Professors", img: AppAssets.student,name2: "",),
+                      GestureDetector(
+                        onTap:(){
+                          Get.to(SupervisorProfileScreen(role: 'admin'));
+                        },
+                          child: Customstudent(name1: "Professors", img: AppAssets.student,name2: "",)),
                       Customstudent(name1: "Groups", img: AppAssets.info,name2: "Info",)
 
                     ],),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [
-                    Customstudent(name1: "Groups", img: AppAssets.progress,name2: "Progress",),
-                    Customstudent(name1: "Submitted", img: AppAssets.files,name2: "Files",)
+                    GestureDetector(
+                      onTap:(){
+                        Get.to(GroupsProgressScreen(type: 'admin',));
+                      },
+                        child: Customstudent(name1: "Groups", img: AppAssets.progress,name2: "Progress",)),
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(ChangeSupervisorRequestScreen());
+                      },
+                        child: Customstudent(name1: "Students", img: AppAssets.files,name2: "Requests",))
                   ],),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [

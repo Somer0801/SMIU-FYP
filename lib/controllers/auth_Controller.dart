@@ -20,7 +20,7 @@ signInUser(userModel userData) async {
   showDialogue();
   print(userData.university_id);
   print(userData.password);
-  print(userData.role);
+  // print(userData.role);
 
   try {
     final response = await http.post(
@@ -28,6 +28,7 @@ signInUser(userModel userData) async {
       body: {
         "university_id": userData.university_id,
         "password": userData.password,
+
 
       },
     );
@@ -40,24 +41,25 @@ signInUser(userModel userData) async {
         if (responseData["data"]["user"]["role"] == "student") {
           appStorage.write(studentToken, responseData["data"]["token"]);
 
-          appStorage.write(studentId, responseData["data"]["user"]["id"]);
+          appStorage.write(studentId, responseData["data"]["user"]["university_id"]);
           appStorage.write(studentName, responseData["data"]["user"]["name"]);
           print("Student Token:${appStorage.read(studentToken)}");
           print("Student ID ${appStorage.read(studentId)}");
           print("Student name${appStorage.read(studentName)}");
           Get.offAll(StudentDashboardScreen());
         }
-        else if (responseData["data"]["user"]["role"] == "professor") {
-          appStorage.write(studentToken, responseData["data"]["token"]);
-          appStorage.write(professorId, responseData["data"]["user"]["id"]);
+        else if (responseData["data"]["user"]["role"] == "supervisor") {
+          appStorage.write(professorToken, responseData["data"]["token"]);
+          appStorage.write(professorId, responseData["data"]["user"]["university_id"]);
           appStorage.write(professorName, responseData["data"]["user"]["name"]);
-          print(appStorage.read(studentToken));
+          print(appStorage.read(professorToken));
           print(appStorage.read(professorId));
           print(appStorage.read(professorName));
+          // Get.offAll(AdminDashBoardScreen());
           Get.offAll(SupervisorDashboardScreen());
         }
         else if (responseData["data"]["user"]["role"] == "admin") {
-          appStorage.write(studentToken, responseData["data"]["token"]);
+          appStorage.write(adminToken, responseData["data"]["token"]);
           appStorage.write(adminId, responseData["data"]["user"]["id"]);
           appStorage.write(adminName, responseData["data"]["user"]["name"]);
           print(appStorage.read(adminToken));
@@ -114,8 +116,9 @@ registerUser(userModel userData) async {
     Get.back();
     final Map<String, dynamic> responseData = json.decode(response.body);
     print(responseData);
+    print(response.statusCode);
 
-    if (response.statusCode == 200) {
+
       if (responseData["success"] == true) {
         if (responseData["data"]["user"]["role"] == "student") {
           showInSnackBar("Student Registered Successfully");
@@ -130,14 +133,12 @@ registerUser(userModel userData) async {
           Get.offAll(AdminLoginScreen());
         }
       }
-    }else {
+    else {
 
       print("Sign Up error: ${response.statusCode}");
       print("Response: ${response.body}");
 
-      showInSnackBar(
-          "Error ${response.statusCode} ${responseData['error']}",
-          color: AppColors.errorcolor);
+      showInSnackBar(responseData["message"], color: AppColors.errorcolor);
       // Get.back();
     }
 

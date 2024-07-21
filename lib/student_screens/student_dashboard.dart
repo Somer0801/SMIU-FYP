@@ -8,7 +8,9 @@ import 'package:smiu/components/customstudent.dart';
 import 'package:smiu/components/dashbardTile.dart';
 import 'package:smiu/components/textfield.dart';
 import 'package:smiu/components/textstyle.dart';
+import 'package:smiu/controllers/proposal_controller.dart';
 import 'package:smiu/dashboard.dart';
+import 'package:smiu/local_storage/get_storage.dart';
 import 'package:smiu/student_screens/editProfile.dart';
 import 'package:smiu/student_screens/professors.dart';
 import 'package:smiu/student_screens/proposal%20Submission.dart';
@@ -25,6 +27,7 @@ class StudentDashboardScreen extends StatefulWidget {
 }
 
 class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
+  ProposalController controller =Get.put(ProposalController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,6 +44,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   children: [
                     GestureDetector(
                       onTap: (){
+                        appStorage.erase();
                         Get.to(StudentLoginScreen());
                       },
                         child: Text("Logout",style: TextStyle(color: Colors.black,),)),
@@ -138,7 +142,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
-                            Center(child: Text("Syed Muhammad Omer",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                            Center(child: Text("${appStorage.read(studentName)}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                             SizedBox(height: Get.height*0.01,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -149,7 +153,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
 
-                                    Center(child: Text("CSC-2OF-173",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                                    Center(child: Text("${appStorage.read(studentId)}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                                     SizedBox(height: Get.height*0.015,),
 
                                     GestureDetector(
@@ -199,11 +203,14 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
 
                     GestureDetector(
                       onTap:(){
-                        Get.to(ProfessorsDetailScreen());
+                        Get.to(SupervisorProfileScreen(role: 'student',));
                       },
-                        child: Customstudent(name1: "Profile", img: AppAssets.student,name2: "",)),
+                        child: Customstudent(name1: "Supervisors profiles", img: AppAssets.student,name2: "",)),
                     GestureDetector(
-                      onTap: (){Get.to(SuperVisorSelection());},
+                      onTap: (){
+                        controller.teamCheck();
+
+                      },
                         child: Customstudent(name1: "Supervisor", img: AppAssets.teacher,name2: "Selection",))
 
                   ],),

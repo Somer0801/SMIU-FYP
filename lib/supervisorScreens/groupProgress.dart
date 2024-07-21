@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:smiu/adminScreens/admin_dashborad_screen.dart';
 import 'package:smiu/components/appAssets.dart';
 import 'package:smiu/controllers/meeting_controller.dart';
 import 'package:smiu/controllers/progress_controller.dart';
@@ -16,7 +17,8 @@ import '../components/colors.dart';
 import '../student_screens/student_progress_screen.dart';
 
 class GroupsProgressScreen extends StatefulWidget {
-  const GroupsProgressScreen({Key? key}) : super(key: key);
+  final String type;
+  const GroupsProgressScreen({Key? key,required this.type}) : super(key: key);
 
   @override
   State<GroupsProgressScreen> createState() => _GroupsProgressScreenState();
@@ -44,7 +46,7 @@ class _GroupsProgressScreenState extends State<GroupsProgressScreen> {
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
                       onTap: (){
-                        Get.to(SupervisorDashboardScreen());
+                        widget.type=='supervisor'? Get.to(SupervisorDashboardScreen()):Get.to(AdminDashBoardScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15),

@@ -40,8 +40,8 @@ class Customstudent extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 7),
                   child: Column(
                     children: [
-                      Text(name1,style: TextStyle(color:Colors.white,fontSize: 16,fontWeight: FontWeight.w700,letterSpacing: 1.2)),
-                      Text(name2,style: TextStyle(color:Colors.white,fontSize: 16,fontWeight: FontWeight.w700,letterSpacing: 1.2)),
+                      Text(name1,textAlign:TextAlign.center, style: TextStyle(color:Colors.white,fontSize: 16,fontWeight: FontWeight.w700,letterSpacing: 1.2)),
+                      Text(name2,textAlign:TextAlign.center,style: TextStyle(color:Colors.white,fontSize: 16,fontWeight: FontWeight.w700,letterSpacing: 1.2)),
                     ],
                   ))
 

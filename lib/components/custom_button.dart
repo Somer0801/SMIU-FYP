@@ -5,8 +5,8 @@ import 'package:smiu/components/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback tap;
-  const CustomButton({required this.text,required this.tap});
+  final VoidCallback? tap;
+  const CustomButton({required this.text,this.tap});
 
   @override
   Widget build(BuildContext context) {

@@ -85,7 +85,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     passwordController.text.isNotEmpty) {
                   contoller.signInUser(userModel(
                       role: "admin",
-                      name: rollnumberController.text,
+                      university_id: rollnumberController.text,
                       password: passwordController.text));
                 }
                 else if(rollnumberController.text.isEmpty){
@@ -94,7 +94,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 else{
                   showInSnackBar("Enter Your Password",color: AppColors.errorcolor);
                 }
-                Get.to(AdminDashBoardScreen());} ),
+                // Get.to(AdminDashBoardScreen());
+              } ),
               SizedBox(height: Get.height*0.035),
               Center(
                 child: Row(

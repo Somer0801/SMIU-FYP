@@ -79,35 +79,44 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
               CustomTextField(hinttext:"Enter Email", controller: emailController,showSuffixIcon: false,),
               CustomTextField(hinttext:"Enter Password", controller: passwordController,showSuffixIcon: true,),
               SizedBox(height: Get.height*0.05,),
-              CustomButton(text: "Sign Up", tap:(){
-                if(nameController.text.isNotEmpty && rollnumberController.text.isNotEmpty &&
-                    emailController.text.isNotEmpty && passwordController.text.isNotEmpty&&passwordController.text.length>=6&&!_emailValidator.hasMatch(emailController.text) ){
-                  contoller.registerUser(userModel(role: "student",name: nameController.text,email: emailController.text,
-                      password: passwordController.text,university_id: rollnumberController.text)
-                  );
+              CustomButton(
+                text: "Sign Up",
+                tap: () {
+                  print("Sign Up button tapped");
+                  if (nameController.text.isNotEmpty &&
+                      rollnumberController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty &&
+                      passwordController.text.length >= 6 &&
+                      _emailValidator.hasMatch(emailController.text)) {
+                    print("All validations passed");
+                    contoller.registerUser(
+                      userModel(
+                        role: "student",
+                        name: nameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        university_id: rollnumberController.text,
+                      ),
+                    );
+                  } else {
+                    if (nameController.text.isEmpty) {
+                      showInSnackBar("Enter Your Name", color: AppColors.errorcolor);
+                    } else if (rollnumberController.text.isEmpty) {
+                      showInSnackBar("Enter Your Roll number", color: AppColors.errorcolor);
+                    } else if (emailController.text.isEmpty) {
+                      showInSnackBar("Enter Your Email", color: AppColors.errorcolor);
+                    } else if (!_emailValidator.hasMatch(emailController.text)) {
+                      showInSnackBar("Enter a valid email address", color: AppColors.errorcolor);
+                    } else if (passwordController.text.length < 6) {
+                      showInSnackBar("Password Should be greater than 6", color: AppColors.errorcolor);
+                    } else if (passwordController.text.isEmpty) {
+                      showInSnackBar("Enter Your Password", color: AppColors.errorcolor);
+                    }
+                  }
+                },
+              ),
 
-
-                }
-                else if(nameController.text.isEmpty){
-                  showInSnackBar("Enter Your Name",color:AppColors.errorcolor);
-                }
-                else if(rollnumberController.text.isEmpty){
-                  showInSnackBar("Enter Your Roll number",color:AppColors.errorcolor);
-                }
-                else if(emailController.text.isEmpty){
-                  showInSnackBar("Enter Your Email ",color:AppColors.errorcolor);
-                }
-                else if (!_emailValidator.hasMatch(emailController.text)) {
-                  showInSnackBar("Enter a valid email address", color: AppColors.errorcolor);
-                }
-                else if(passwordController.text.length<6){
-                  showInSnackBar("Password Should be greater than 6 ",color:AppColors.errorcolor);
-                }
-                else if(passwordController.text.isEmpty){
-                  showInSnackBar("Enter Your Password",color:AppColors.errorcolor);
-                }
-
-                } ),
               SizedBox(height: Get.height*0.035),
               Center(
                 child: Row(

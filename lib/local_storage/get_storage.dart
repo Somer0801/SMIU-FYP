@@ -11,6 +11,7 @@ String adminId="adminId";
 String studentName="studentName";
 String professorName="professorName";
 String adminName="adminName";
+String studentRollNumber='CSC-20F-XYZ';
 
 String name="name";
 String profile="profile";

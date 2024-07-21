@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:smiu/components/appAssets.dart';
 import 'package:smiu/components/colors.dart';
@@ -9,8 +10,11 @@ import 'package:smiu/components/dashbardTile.dart';
 import 'package:smiu/components/textfield.dart';
 import 'package:smiu/components/textstyle.dart';
 import 'package:smiu/dashboard.dart';
+import 'package:smiu/local_storage/get_storage.dart';
+import 'package:smiu/student_screens/professors.dart';
 import 'package:smiu/student_screens/studentRegistration.dart';
 import 'package:smiu/student_screens/student_progress_screen.dart';
+import 'package:smiu/supervisorScreens/StudentRequestScreen.dart';
 import 'package:smiu/supervisorScreens/groupProgress.dart';
 import 'package:smiu/supervisorScreens/supervsior_login.dart';
 class SupervisorDashboardScreen extends StatefulWidget {
@@ -37,6 +41,8 @@ class _SupervisorDashboardScreenState extends State<SupervisorDashboardScreen> {
                   children: [
                     GestureDetector(
                         onTap: (){
+                          appStorage.erase();
+                          print('erase');
                           Get.to(SupervisorLoginScreen());
                         },
                         child: Text("Logout",style: TextStyle(color: Colors.black,),)),
@@ -121,7 +127,7 @@ class _SupervisorDashboardScreenState extends State<SupervisorDashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
 
                             children: [
-                              Center(child: Text("Prof Ameen Khowaja",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                              Center(child: Text("Prof ${appStorage.read(professorName)}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                               SizedBox(height: Get.height*0.01,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -132,7 +138,7 @@ class _SupervisorDashboardScreenState extends State<SupervisorDashboardScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
 
-                                      Center(child: Text("CSC-2OF-173",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
+                                      Center(child: Text("${appStorage.read(professorId)}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),)),
                                       SizedBox(height: Get.height*0.015,),
 
                                       Container(height: Get.height*0.05,width: Get.width*0.3,
@@ -175,7 +181,12 @@ class _SupervisorDashboardScreenState extends State<SupervisorDashboardScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
 
-                      Customstudent(name1: "Profile", img: AppAssets.student,name2: "",),
+                      GestureDetector(
+                        onTap:(){
+                          Get.to(StudentRequestScreen());
+                        },
+
+                          child: Customstudent(name1: "FYP", img: AppAssets.student,name2: "Requests",)),
                       Customstudent(name1: "Groups", img: AppAssets.info,name2: "Info",)
 
                     ],),
@@ -183,7 +194,7 @@ class _SupervisorDashboardScreenState extends State<SupervisorDashboardScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [
                     GestureDetector(
                       onTap: (){
-                        Get.to(GroupsProgressScreen());
+                        Get.to(GroupsProgressScreen(type: 'supervisor',));
                       },
                         child: Customstudent(name1: "Groups", img: AppAssets.progress,name2: "Progress",)),
                     Customstudent(name1: "Submitted", img: AppAssets.files,name2: "Files",)

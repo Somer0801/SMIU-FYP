@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smiu/adminScreens/admin_dashborad_screen.dart';
 import 'package:smiu/components/appAssets.dart';
 import 'package:smiu/components/colors.dart';
 import 'package:smiu/dashboard.dart';
@@ -21,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 4), () {
-      Get.offAll(DashBoardScreen());
+     checkUser();
 
     });
 
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.offAll(SupervisorDashboardScreen() );
     }
     else if(appStorage.read(adminToken)!=null){
-      Get.offAll(StudentDashboardScreen());
+      Get.offAll(AdminDashBoardScreen());
     }
     else{
       Get.offAll(DashBoardScreen());
